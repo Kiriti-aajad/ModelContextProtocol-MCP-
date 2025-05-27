@@ -20,10 +20,10 @@ MCP_Project/
 │   └── prompt_templates.py       # Predefined prompt patterns for SQL generation, filtering
 │
 ├── database_layer/               # Handles SQL generation, validation, execution
-│   ├── sql_query_generator.py    # 🔹 Generates SQL queries from LLM text
-│   ├── sql_query_validator.py    # 🔒 Validates and sanitizes SQL queries
-│   ├── sql_executor.py           # 🧠 Executes validated queries on the database
-│   └── db_connector.py           # 📡 Connects to DB (SQLite, PostgreSQL, etc.)
+│   ├── sql_query_generator.py    #  Generates SQL queries from LLM text
+│   ├── sql_query_validator.py    #  Validates and sanitizes SQL queries
+│   ├── sql_executor.py           # Executes validated queries on the database
+│   └── db_connector.py           # Connects to DB (SQLite, PostgreSQL, etc.)
 │
 ├── data/                         # Example or production datasets
 │   ├── tat_scores.csv            # Sample data file
