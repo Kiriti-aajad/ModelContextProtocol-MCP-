@@ -1,42 +1,86 @@
-# ModelContextProtocol-MCP-
-GOAL -> To create an MCP server with LLM  to connect with database  and retrive data from Multiple tables and create a final output table by sql script or retrive some information.
+#  ModelContextProtocol (MCP)
 
+##  Goal
 
+The **ModelContextProtocol (MCP)** project aims to build a flexible and modular system that connects a Large Language Model (LLM) with structured databases. The LLM interprets user queries, generates SQL scripts, retrieves data from multiple tables, and returns the final output in a structured format (e.g., tables, charts, summaries).
+
+---
+
+##  Project Structure
+
+```
 MCP_Project/
 │
-├── app/                          # Streamlit or Web UI frontend
-│   ├── main_ui.py                # Streamlit-based UI with input box, results panel
-│   ├── chat_components.py        # Chat history, message formatting, input handling
-│   └── config.py                 # Frontend configs (API keys, UI settings, etc.)
+├── app/                          # Frontend: Streamlit-based user interface
+│   ├── main_ui.py                # Main UI with input box, result panel, interaction logic
+│   ├── chat_components.py        # Chat message formatting and chat history
+│   └── config.py                 # UI and frontend configuration (API keys, styles)
 │
-├── mcp_engine/                   # Core protocol engine to handle LLM ↔ DB ↔ Response
-│   ├── mcp_controller.py         # Controls flow between UI ↔ LLM ↔ SQL ↔ DB
-│   ├── prompt_handler.py         # Prepares and processes LLM prompts
-│   ├── response_formatter.py     # Post-processes DB output to table, JSON, etc.
-│   └── context_manager.py        # Maintains session context (user queries, table info)
+├── mcp_engine/                   # MCP Core engine managing full flow
+│   ├── mcp_controller.py         # Orchestrates flow: UI ↔ LLM ↔ SQL ↔ DB ↔ Response
+│   ├── prompt_handler.py         # Formats and handles LLM prompt construction
+│   ├── response_formatter.py     # Formats DB output to JSON, table, etc.
+│   └── context_manager.py        # Manages session context and table/query history
 │
-├── llm_interface/                # LLM abstraction (can support GPT, Ollama, etc.)
-│   ├── llm_client.py             # Sends/receives prompt to/from local or API-based LLM
-│   └── prompt_templates.py       # Predefined prompt patterns for SQL generation, filtering
+├── llm_interface/                # Handles LLM API or local call integration
+│   ├── llm_client.py             # Sends queries to LLMs (GPT, Ollama, etc.)
+│   └── prompt_templates.py       # Template prompts for different query types
 │
 ├── database_layer/               # Handles SQL generation, validation, execution
-│   ├── sql_query_generator.py    #  Generates SQL queries from LLM text
-│   ├── sql_query_validator.py    #  Validates and sanitizes SQL queries
-│   ├── sql_executor.py           # Executes validated queries on the database
-│   └── db_connector.py           # Connects to DB (SQLite, PostgreSQL, etc.)
+│   ├── sql_query_generator.py    # 🔹 Generates SQL queries from LLM text
+│   ├── sql_query_validator.py    # 🔒 Validates and sanitizes SQL queries
+│   ├── sql_executor.py           # 🧠 Executes validated queries on the database
+│   └── db_connector.py           # 📡 Connects to DB (SQLite, PostgreSQL, etc.)
 │
-├── data/                         # Example or production datasets
-│   ├── tat_scores.csv            # Sample data file
-│   └── schema.json               # JSON schema for DB tables
+├── data/                         # Demo or production datasets
+│   ├── tat_scores.csv            # Example financial dataset
+│   └── schema.json               # Schema definitions for table columns and types
 │
 ├── tests/                        # Unit and integration tests
 │   ├── test_sql_generation.py
 │   ├── test_llm_responses.py
 │   └── test_validator.py
 │
-├── logs/                         # Query logs, error logs, etc.
-│   └── mcp_app.log
+├── logs/                         # Logging system
+│   └── mcp_app.log               # Log file for errors, queries, sessions
 │
-├── requirements.txt              # Python dependencies
-├── README.md                     # Project overview and setup
-└── run.py                        # Entry point to launch the app
+├── requirements.txt              # Python package dependencies
+├── README.md                     # Project documentation (this file)
+└── run.py                        #  Entry point to launch the MCP app
+```
+
+---
+
+##  Features
+
+*  Seamless integration with local or API-based LLMs
+*  Smart SQL generation from natural language queries
+*  Query validation and sanitation for secure database access
+*  Real-time data retrieval and response formatting
+*  Chat-style UI for query history and interaction
+*  Multi-table joins, filter application, and conditional logic
+
+---
+
+## Getting Started
+
+1. **Clone the Repository**
+
+   ```bash
+   git clone https://github.com/yourname/ModelContextProtocol-MCP.git
+   cd ModelContextProtocol-MCP
+   ```
+
+2. **Install Dependencies**
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Run the Application**
+
+   ```bash
+   python run.py
+   ```
+
+---
