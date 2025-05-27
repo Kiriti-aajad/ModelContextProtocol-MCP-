@@ -20,3 +20,8 @@ rad.json
 *.flf
 #Test results file
 TestResults.xml
+# data folder
+data/
+# Visual Studio Code settings
+.vscode/settings.json
+# Visual Studio Code tasks

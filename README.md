@@ -84,3 +84,11 @@ MCP_Project/
    ```
 
 ---
+1. User types: "What was the avg TAT score for ABC in Q2 2024?"
+2. Backend loads schema from `data/schema.json`
+3. Prompt template + schema + examples are sent to LLM
+4. LLM replies with SQL
+5. `sql_query_validator.py` checks SQL safety
+6. Safe SQL runs via `sql_executor.py`
+7. Results are formatted and returned to UI
+---
