@@ -1,12 +1,12 @@
-# 🧐 ModelContextProtocol (MCP)
+#  ModelContextProtocol (MCP)
 
-## 🚀 Goal
+##  Goal
 
 The **ModelContextProtocol (MCP)** project aims to build a flexible and modular system that connects a Large Language Model (LLM) with structured databases. The LLM interprets user queries, generates SQL scripts, retrieves data from multiple tables, and returns the final output in a structured format (e.g., tables, charts, summaries).
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 MCP_Project/
@@ -27,10 +27,10 @@ MCP_Project/
 │   └── prompt_templates.py       # Template prompts for different query types
 │
 ├── database_layer/               # Responsible for SQL generation and DB interaction
-│   ├── sql_query_generator.py    # 🔹 Converts text to SQL query
-│   ├── sql_query_validator.py    # 🔒 Ensures SQL is valid and secure
-│   ├── sql_executor.py           # 🧠 Executes SQL queries on target DB
-│   └── db_connector.py           # 📡 Establishes connection to DB (e.g., SQLite, Postgres)
+│   ├── sql_query_generator.py    #  Converts text to SQL query
+│   ├── sql_query_validator.py    #  Ensures SQL is valid and secure
+│   ├── sql_executor.py           #  Executes SQL queries on target DB
+│   └── db_connector.py           #  Establishes connection to DB (e.g., SQLite, Postgres)
 │
 ├── data/                         # Demo or production datasets
 │   ├── tat_scores.csv            # Example financial dataset
@@ -46,23 +46,23 @@ MCP_Project/
 │
 ├── requirements.txt              # Python package dependencies
 ├── README.md                     # Project documentation (this file)
-└── run.py                        # 🚀 Entry point to launch the MCP app
+└── run.py                        #  Entry point to launch the MCP app
 ```
 
 ---
 
-## 🤩 Features
+##  Features
 
-* ✅ Seamless integration with local or API-based LLMs
-* 🧠 Smart SQL generation from natural language queries
-* 🔐 Query validation and sanitation for secure database access
-* 📊 Real-time data retrieval and response formatting
-* 💬 Chat-style UI for query history and interaction
-* 🔀 Multi-table joins, filter application, and conditional logic
+*  Seamless integration with local or API-based LLMs
+*  Smart SQL generation from natural language queries
+*  Query validation and sanitation for secure database access
+*  Real-time data retrieval and response formatting
+*  Chat-style UI for query history and interaction
+*  Multi-table joins, filter application, and conditional logic
 
 ---
 
-## 💻 Getting Started
+## Getting Started
 
 1. **Clone the Repository**
 
@@ -84,35 +84,3 @@ MCP_Project/
    ```
 
 ---
-
-## 🤪 Testing
-
-Run all tests using:
-
-```bash
-pytest tests/
-```
-
----
-
-## 📘 Example Use Case
-
-> **Query:** "Show me the average TAT score of enterprises with more than 100 employees, grouped by sector."
->
-> **MCP Flow:**
->
-> 1. LLM parses the question and generates a SQL query.
-> 2. Query is validated and executed on the database.
-> 3. Results are formatted into a table and displayed in the chat UI.
-
----
-
-## 📬 Contact
-
-For questions or contributions, feel free to reach out or create a pull request!
-
----
-
-## 📄 License
-
-MIT License. See `LICENSE` for details.
