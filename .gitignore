@@ -24,4 +24,7 @@ TestResults.xml
 data/
 # Visual Studio Code settings
 .vscode/settings.json
-# Visual Studio Code tasks
+# Environment variables file
+.env
+#LLM Models
+Models/

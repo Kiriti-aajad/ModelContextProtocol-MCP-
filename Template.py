@@ -53,7 +53,7 @@ def create_structure():
             with open(file, "w") as f:
                 f.write("")  # create empty file
 
-    print("✅ MCP project structure created successfully.")
+    print("MCP project structure created successfully.")
 
 if __name__ == "__main__":
     create_structure()

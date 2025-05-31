@@ -1,29 +1,17 @@
-# mcp_engine/response_formatter.py
+class ResponseFormatter:
+    def __init__(self):
+        pass
 
-import pandas as pd
+    def format(self, raw_response):
+        """
+        Takes raw LLM or engine response and converts it to a structured output.
+        For now, it's just a pass-through or simple cleanup.
 
-def format_response(query_result: dict) -> dict:
-    """
-    Converts raw DB query output to a structured JSON-like dictionary.
-    
-    query_result should be a dict:
-    {
-        "columns": [...],
-        "rows": [...]
-    }
-    """
-    if not query_result or not query_result.get("rows"):
-        return {
-            "message": "No results found.",
-            "data": [],
-            "columns": []
-        }
-
-    df = pd.DataFrame(query_result["rows"], columns=query_result["columns"])
-    json_data = df.to_dict(orient="records")
-
-    return {
-        "message": "Query successful.",
-        "columns": query_result["columns"],
-        "data": json_data
-    }
+        You can expand this later to extract SQL queries, table names, or other structured info.
+        """
+        if isinstance(raw_response, str):
+            return {"response": raw_response.strip()}
+        elif isinstance(raw_response, dict):
+            return raw_response
+        else:
+            return {"response": str(raw_response)}

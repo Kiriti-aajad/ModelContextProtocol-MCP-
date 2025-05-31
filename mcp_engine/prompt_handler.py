@@ -1,23 +1,30 @@
-# mcp_engine/prompt_handler.py
+class PromptHandler:
+    def __init__(self, context_manager):
+        self.context_manager = context_manager
 
-def build_prompt(user_query: str, schema_hint: str = "") -> str:
-    """
-    Builds a structured prompt for the LLM to generate SQL.
-    """
-    prompt = f"""
-You are a helpful assistant that converts natural language questions into SQL queries.
+    def build_prompt(self, user_query):
+        # Collect relevant schema context (optional logic can be added here)
+        all_tables = self.context_manager.list_all_tables()
 
-User question:
-"{user_query}"
+        schema_context = []
+        for table in all_tables:
+            columns = self.context_manager.get_columns_in_table(table)
+            col_descriptions = ", ".join([col["column_name"] for col in columns])
+            schema_context.append(f"{table}: {col_descriptions}")
 
-Database schema:
-{schema_hint}
+        schema_snippet = "\n".join(schema_context[:10])  # Limit context to avoid overload
 
-Instructions:
-- Generate a syntactically correct SQL query.
-- Only use tables and columns from the schema.
-- Return only the SQL code, nothing else.
+        # Construct the prompt
+        prompt = f"""
+You are a database query assistant.
 
-Respond with only the SQL query:
+Schema Overview (partial):
+{schema_snippet}
+
+User Query:
+{user_query}
+
+Based on the above schema, understand the user’s intent and help determine the appropriate table(s) and context.
 """
-    return prompt.strip()
+
+        return prompt.strip()
