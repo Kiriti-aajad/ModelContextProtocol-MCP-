@@ -4,7 +4,6 @@ import re
 # Set page config
 st.set_page_config(page_title="ChatSQL", layout="centered")
 
-# Apply basic CSS for GPT-like styling
 st.markdown("""
     <style>
         .chat-message {

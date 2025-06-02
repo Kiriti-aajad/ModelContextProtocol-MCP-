@@ -6,3 +6,4 @@ typing-extensions>=4.10.0
 gpt4all
 requests>=2.32.2
 starlette>=0.41.3
+psycopg2
