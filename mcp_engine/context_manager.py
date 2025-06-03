@@ -1,74 +1,59 @@
-import os
-import json
+"""Manage user session contexts with persistence support."""
+
+import logging
+from typing import Dict, Optional
+from threading import Lock
+
+logger = logging.getLogger(__name__)
 
 class ContextManager:
-    def __init__(self, schema_path="data/database_schema.json"):
-        self.schema_path = schema_path
-        self.schema = {}
-        self.table_names = set()
-        self.column_to_tables = {}
+    """
+    Thread-safe context manager for storing and retrieving per-user session data.
+    """
 
-        self._load_schema()
+    def __init__(self) -> None:
+        self._contexts: Dict[str, Dict] = {}
+        self._lock = Lock()
 
-    def _load_schema(self):
-        if not os.path.exists(self.schema_path):
-            raise FileNotFoundError(f"Schema file not found: {self.schema_path}")
-
-        with open(self.schema_path, 'r', encoding='utf-8') as f:
-            self.schema = json.load(f)
-
-        self._index_schema()
-
-    def _index_schema(self):
-        for full_table_name, columns in self.schema.items():
-            self.table_names.add(full_table_name.lower())
-
-            for col in columns:
-                col_name = col.get("column_name", "").lower()
-                if col_name:
-                    if col_name not in self.column_to_tables:
-                        self.column_to_tables[col_name] = set()
-                    self.column_to_tables[col_name].add(full_table_name.lower())
-
-    def list_all_tables(self):
-        """Returns a list of all table names."""
-        return sorted(list(self.table_names))
-
-    def get_columns_in_table(self, table_name):
-        """Returns column details for a given table."""
-        return self.schema.get(table_name.lower(), [])
-
-    def find_tables_with_column(self, column_name):
-        """Returns a list of table names that contain the given column."""
-        return sorted(list(self.column_to_tables.get(column_name.lower(), [])))
-
-    def extract_context(self, query: str) -> dict:
+    def load_context(self, user_id: str) -> Dict:
         """
-        Extracts relevant schema context based on query keywords (table and column names).
-        Returns a dictionary with matched tables and their columns.
+        Retrieve the current context for a user.
+
+        Args:
+            user_id: Unique user identifier.
+
+        Returns:
+            User context dictionary (empty if none exists).
         """
-        keywords = query.lower().split()
-        matched_tables = set()
-        matched_columns = set()
-
-        # Find relevant tables and columns
-        for word in keywords:
-            if word in self.table_names:
-                matched_tables.add(word)
-            if word in self.column_to_tables:
-                matched_columns.add(word)
-
-        context = {}
-
-        # Add tables directly matched
-        for table in matched_tables:
-            context[table] = self.get_columns_in_table(table)
-
-        # Add tables indirectly matched via column references
-        for column in matched_columns:
-            tables = self.find_tables_with_column(column)
-            for table in tables:
-                if table not in context:
-                    context[table] = self.get_columns_in_table(table)
-
+        with self._lock:
+            context = self._contexts.get(user_id, {}).copy()
+        logger.debug(f"Loaded context for user {user_id}: {context}")
         return context
+
+    def update_context(self, user_id: str, new_data: Dict) -> None:
+        """
+        Update the stored context with new data.
+
+        Args:
+            user_id: Unique user identifier.
+            new_data: Dictionary of new context data.
+        """
+        with self._lock:
+            if user_id not in self._contexts:
+                self._contexts[user_id] = {}
+            self._contexts[user_id].update(new_data)
+        logger.debug(f"Updated context for user {user_id} with {new_data}")
+
+    def clear_context(self, user_id: str) -> None:
+        """
+        Clear context data for a user.
+
+        Args:
+            user_id: Unique user identifier.
+        """
+        with self._lock:
+            if user_id in self._contexts:
+                del self._contexts[user_id]
+                logger.debug(f"Cleared context for user {user_id}")
+            else:
+                logger.debug(f"No context to clear for user {user_id}")

@@ -1,17 +1,24 @@
+"""Formats raw LLM responses before returning to clients."""
+
 class ResponseFormatter:
     def __init__(self):
         pass
 
-    def format(self, raw_response):
+    def format_response(self, llm_response: str) -> str:
         """
-        Takes raw LLM or engine response and converts it to a structured output.
-        For now, it's just a pass-through or simple cleanup.
+        Clean and format raw LLM response text.
 
-        You can expand this later to extract SQL queries, table names, or other structured info.
+        Args:
+            llm_response: Raw response from the LLM.
+
+        Returns:
+            Formatted string suitable for client consumption.
         """
-        if isinstance(raw_response, str):
-            return {"response": raw_response.strip()}
-        elif isinstance(raw_response, dict):
-            return raw_response
-        else:
-            return {"response": str(raw_response)}
+        if not llm_response:
+            return "I'm sorry, I did not receive a response."
+
+        # Example formatting: strip, remove excessive spaces, add safety checks
+        response = llm_response.strip()
+        # Additional formatting or sanitizing can go here
+
+        return response

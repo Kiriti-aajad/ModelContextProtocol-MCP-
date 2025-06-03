@@ -1,30 +1,35 @@
+"""Generates LLM prompt from user input and session context."""
+
+from typing import Dict, Optional
+
 class PromptHandler:
-    def __init__(self, context_manager):
-        self.context_manager = context_manager
+    def __init__(self):
+        pass
 
-    def build_prompt(self, user_query):
-        # Collect relevant schema context (optional logic can be added here)
-        all_tables = self.context_manager.list_all_tables()
+    def create_prompt(self, user_query: str, context: Optional[Dict] = None) -> str:
+        """
+        Combine user query with relevant context to generate an LLM prompt.
 
-        schema_context = []
-        for table in all_tables:
-            columns = self.context_manager.get_columns_in_table(table)
-            col_descriptions = ", ".join([col["column_name"] for col in columns])
-            schema_context.append(f"{table}: {col_descriptions}")
+        Args:
+            user_query: The user's current input query.
+            context: Optional dictionary of previous context.
 
-        schema_snippet = "\n".join(schema_context[:10])  # Limit context to avoid overload
+        Returns:
+            A string prompt formatted for LLM consumption.
+        """
+        context_section = ""
+        if context:
+            # Pick what to include from context to avoid prompt bloat
+            history = context.get("history", [])
+            if history:
+                context_section = "Conversation History:\n"
+                for entry in history[-5:]:  # last 5 exchanges max
+                    context_section += f"User: {entry.get('user')}\nAssistant: {entry.get('assistant')}\n"
+                context_section += "\n"
 
-        # Construct the prompt
-        prompt = f"""
-You are a database query assistant.
-
-Schema Overview (partial):
-{schema_snippet}
-
-User Query:
-{user_query}
-
-Based on the above schema, understand the user’s intent and help determine the appropriate table(s) and context.
-"""
-
-        return prompt.strip()
+        prompt = (
+            f"{context_section}"
+            f"User Query:\n{user_query}\n"
+            "Provide a detailed and helpful response."
+        )
+        return prompt
